@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile of {{ user.username }}</title>
+    <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
+</head>
+<body>
+    <div class="profile-container">
+        <h2 class="profile-header">Profile of {{ user.username }}</h2>
+        <div class="profile-info">
+            <p><strong>First Name:</strong> {{ user.first_name }}</p>
+            <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Date Joined:</strong> {{ user.date_joined }}</p>
+        </div>
+
+        <div class="friend-actions">
+            {% if user != request.user %}
+                {% if friendship %}
+                    <h3><a class="action-link" href="{% url 'remove_friend' user.user_id %}">Remove Friend</a></h3>
+                {% elif friend_request %}
+                    {% if friend_request.to_user == user %}
+                        <h3><a class="action-link" href="{% url 'remove_friend_request' friend_request.id %}">Remove Friend Request</a></h3>
+                    {% else %}
+                        <p><strong>Friend Request: </strong>
+                        <a class="action-link" href="{% url 'handle_friend_request' friend_request.id 1 %}">Accept</a>
+                        <a class="action-link" href="{% url 'handle_friend_request' friend_request.id 0 %}">Decline</a></p>
+                    {% endif %}
+                {% elif not friendship and not friend_request %}
+                    <h3><a class="action-link" href="{% url 'send_friend_request' user.user_id %}">Send Friend Request</a></h3>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <h3>Achievements</h3>
+        <div class="achievements">
+            {% for achievement in achievements %}
+                <div class="achievement">
+                    {% if achievement.icon %}
+                        <img src="{% static achievement.icon %}" alt="{{ achievement.name }} icon" class="achievement-icon">
+                    {% endif %}
+                    <h4>{{ achievement.name }}</h4>
+                    <p>{{ achievement.description }}</p>
+                    <small>Achieved on: {{ achievement.achieved_on|date:"F j, Y" }}</small>
+                </div>
+            {% empty %}
+                <p>No achievements yet.</p>
+            {% endfor %}
+        </div>
+
+        <div class="profile-footer">
+            <h5><a class="footer-link" href="{% url 'home' %}">Back to Home</a></h5>
+            <h5><a class="footer-link" href="{% url 'logout' %}">Log Out</a></h5>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 Pong Tournament</p>
+    </footer>
+</body>
+</html>

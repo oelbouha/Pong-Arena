@@ -1,0 +1,124 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #333;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #222;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    color: #fff;
+}
+
+nav .nav-list {
+    list-style: none;
+    padding: 0;
+}
+
+nav .nav-item {
+    display: inline;
+    margin: 0 10px;
+}
+
+nav .nav-link {
+    color: #4caf50;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+nav .nav-link:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 20px;
+}
+
+.profile-info {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.profile-info h2 {
+    margin-top: 0;
+}
+
+.friends-section, .requests-section, .search-section {
+    margin-bottom: 20px;
+}
+
+.friend-list, .request-list, .search-results {
+    list-style: none;
+    padding: 0;
+}
+
+.friend-item, .request-item, .search-item {
+    margin: 10px 0;
+}
+
+.friend-link, .request-link, .send-request {
+    color: #4caf50;
+    text-decoration: none;
+}
+
+.friend-link:hover, .request-link:hover, .send-request:hover {
+    text-decoration: underline;
+}
+
+.remove-friend, .accept-request, .decline-request {
+    color: #f44336;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.remove-friend:hover, .accept-request:hover, .decline-request:hover {
+    text-decoration: underline;
+}
+
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 100vh;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #388e3c;
+}
+
+.footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}

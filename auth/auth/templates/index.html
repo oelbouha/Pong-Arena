@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Koulen&family=Quicksand:wght@300..700&display=swap"
+        rel="stylesheet" />
+    <title>Document</title>
+
+    <script>
+        function parseJwt(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        }
+        async function requestToken(e, id) {
+            e.preventDefault()
+
+            const data = {}
+            e.target.querySelectorAll('input').forEach(el => {
+                if (el.hasAttribute('name'))
+                    data[el.getAttribute('name')] = el.value
+            })
+
+            const request = new Request(e.target.getAttribute('action'), {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                body: (new URLSearchParams(data)).toString(),
+            });
+            const res = await fetch(request);
+            const body = await res.json()
+
+            if (body.refresh)
+                body.refreshDecoded = parseJwt(body.refresh)
+            if (body.access)
+                body.accessDecoded = parseJwt(body.access)
+
+            const pre = document.getElementById(id)
+            pre.innerHTML = prettyJSON(body)
+        }
+
+        function prettyJSON(json) {
+            let ret = "<div class='block'><div class='brace'>{</div>"
+
+            for (const k in json) {
+                const val = json[k]
+                ret += `<div class="prop"><div class='prop-name'>"${k}":</div>`
+                if (typeof val === 'object')
+                    ret += prettyJSON(val)
+                else {
+                    ret += `<div class='prop-value'>${typeof val == 'string'?'"':""}${val}${typeof val == 'string'?'"':""}</div>`
+                }
+                ret += '</div>'
+            }
+
+            ret += "<div class='brace'>}</div></div>"
+            return ret
+        }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Quicksand";
+        }
+
+        input {
+            background-color: #faf7d7;
+            border-radius: .25rem;
+            padding: .3rem 1rem;
+            border: none;
+            outline: none;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.05);
+            color: 
+        }
+
+        button {
+            border: none;
+            padding: .3rem 1rem;
+            background-color: #d7e6fa;
+            border-radius: .25rem;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        h2 {
+            margin-bottom: .5rem;
+        }
+
+        .prop {
+            display: flex;
+            gap: .25rem;
+            margin-left: 1rem;
+            font-family: "Fira Code";
+        }
+        .prop * {
+            font-family: "Fira Code";
+            font-size: .75rem;
+        }
+        body {
+
+            padding: 1.4rem;
+        }
+        #wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        #wrapper > div {
+            background-color: antiquewhite;
+            border-radius: 2rem;
+            padding: 2rem;
+        }
+        .json-wrapper {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .json {
+            background-color: beige;
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 35rem;
+            overflow: auto;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="getTokens">
+            <h2>Get Tokens</h2>
+            <form action="/api/auth/token/" method="POST" onsubmit="requestToken(event, 'jwtAccess')">
+                <input type="text" name="username" placeholder="username">
+                <input type="password" name="password" placeholder="password">
+                <button>login</button>
+            </form>
+        </div>
+        <div id="refreshTokens">
+            <h2>Get Tokens</h2>
+            <form action="/api/auth/token/refresh/" method="POST" onsubmit="requestToken(event, 'jwtAccessAfterRefresh')">
+                <input type="text" name="refresh" placeholder="refresh_token">
+                <button>refresh</button>
+            </form>
+        </div>
+    </div>
+    <div class="json-wrapper">
+        <div class="json" id="jwtAccess"></div>
+        <div class="json" id="jwtAccessAfterRefresh"></div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000; /* Black background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    font-family: Arial, sans-serif;
+}
+
+#game-container {
+    position: relative;
+    width: 800px; /* 80% of the viewport width */
+    height: 450px; /* 80% of the viewport height */
+    border: 2px solid #ededed; /* White border around the game container */
+    background: url('assets/images/background.png') no-repeat center center; /* Background image for the game */
+    background-size: cover;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}

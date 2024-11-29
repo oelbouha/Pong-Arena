@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to Pong</title>
+    <link rel="stylesheet" href="{% static 'styles/landing_page.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to Pong</h1>
+        <nav id="main-nav">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="{% url 'signin' %}" class="nav-link">Sign In</a></li>
+                <li class="nav-item"><a href="{% url 'signup' %}" class="nav-link">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="intro">
+            <h2>Join the Excitement!</h2>
+            <p>Get ready to compete in the ultimate Pong tournaments. Sign up now to join or create your own tournament and challenge players from around the world!</p>
+            <a href="{% url 'signup' %}" class="cta-button">Get Started</a>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Pong Game. All rights reserved.</p>
+    </footer>
+</body>
+</html>

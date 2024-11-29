@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat Rooms</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        text-align: center;
+    }
+    .room {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+    .room-name {
+        font-size: 18px;
+    }
+    .enter-button,
+    .logout-button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        background-color: #4caf50;
+        color: #fff;
+        cursor: pointer;
+    }
+    .enter-button:hover,
+    .logout-button:hover {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Chat Rooms</h1>
+    {% for user in users %}
+        <div class="room">
+            <span class="room-name">{{user.username}}</span>
+            <a href="/room/?id={{user.id}}"><button class="enter-button">Enter</button></a>
+        </div>
+    {% endfor %}
+    <form action="/logout/" method="post">
+        {% csrf_token %}
+        <button class="logout-button">Logout</button>
+    </form>
+</div>
+
+</body>
+</html>

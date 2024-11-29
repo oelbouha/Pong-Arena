@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Users</title>
+    <link rel="stylesheet" href="{% static 'styles/search_users.css' %}">
+</head>
+<body>
+    <div class="search-results-container">
+        <h2 class="page-header">Search Results</h2>
+        <ul class="results-list">
+            {% for user in users %}
+                <li class="result-item">
+                    <a href="{% url 'profile' user.user_id %}" class="result-link">{{ user.username }}</a>
+                    {% if user != request.user %}
+                        {% if friendship %}
+                            <a href="{% url 'remove_friend' user.user_id %}" class="action-link">Remove Friend</a>
+                        {% elif friend_request %}
+                            {% if friend_request.from_user == request.user %}
+                                <a href="{% url 'remove_friend_request' user.user_id %}" class="action-link">Remove Friend Request</a>
+                            {% else %}
+                                <a href="{% url 'handle_friend_request' friend_request.id 1 %}" class="action-link">Accept</a>
+                                <a href="{% url 'handle_friend_request' friend_request.id 0 %}" class="action-link">Decline</a></p>
+                            {% endif %}
+                        {% else %}
+                            <a href="{% url 'send_friend_request' user.user_id %}" class="action-link">Send Friend Request</a>
+                        {% endif %}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'home' %}" class="back-link">Back to Profile</a>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Pong Game. All rights reserved.</p>
+    </footer>
+</body>
+</html>

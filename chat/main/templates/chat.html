@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .message {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .message span {
+            font-size: 12px;
+            color: #ddd;
+        }
+
+        .message.sender {
+            background-color: #4caf50;
+            color: #fff;
+            text-align: right;
+        }
+
+        .input-container {
+            position: relative;
+            width: calc(100% - 20px);
+            margin-top: 10px;
+        }
+
+        .message-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .attachment-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .attachment-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .attachment-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .attachment-button .icon {
+            margin-left: 8px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .send-button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .send-button:hover {
+            background-color: #45a049;
+        }
+
+        .file-name {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #555;
+            pointer-events: none;
+        }
+
+        .attachment-message {
+            display: flex;
+            align-items: center;
+            background-color: #ffbba0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .attachment-icon {
+            font-size: 20px;
+            margin-right: 10px;
+            color: #999;
+        }
+
+        .attachment-info {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .attachment-name {
+            font-weight: bold;
+        }
+
+        .attachment-size {
+            font-style: italic;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <ul class="message-list" id="message-list">
+            {% for message in messages %}
+            {% if message.sender.id == user.id %}
+            <li class="message sender" id="{{ message.id }}"><span>{{ message.status }}</span>{{ message.content }}</li>
+            {% else %}
+            <li class="message" id="{{ message.id }}">{{ message.content }}</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+        <div class="input-container">
+            <input type="text" class="message-input" id="message-input" placeholder="Type your message...">
+            <span class="file-name" id="file-name"></span>
+        </div>
+        <div class="attachment-container">
+            <label for="file-input" class="attachment-button" id="attachment-button">
+                <span class="button-text" id="file-span">Attach File</span>
+                <i class="icon">📎</i>
+            </label>
+            <input type="file" id="file-input" class="file-input">
+        </div>
+        <button class="send-button" id="send-button">Send</button>
+    </div>
+    <script>
+        var csrftoken = '{{ csrf_token }}';
+    </script>
+    <!-- <script src="{% static 'chat.js' %}"></script> -->
+    <script src="{% static 'events.js' %}"></script>
+    <!-- <script src="{% static 'methodsHandler.js' %}"></script> -->
+</body>
+
+</html>

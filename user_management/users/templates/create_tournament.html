@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create a Tournament</title>
+    <link rel="stylesheet" href="{% static 'styles/create_tournament.css' %}">
+</head>
+<body>
+    <div class="tournament-container">
+        <h1>Create a New Tournament</h1>
+        <form method="POST" action="{% url 'create_tournament' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-submit">Create Tournament</button>
+            <a href="{% url 'tournaments' %}" class="btn-cancel">Cancel</a>
+        </form>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 Pong Game</p>
+    </footer>
+</body>
+</html>

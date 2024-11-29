@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0b141b;
+            color: silver;
+            display: grid;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+
+    <script>
+        const channel = new BroadcastChannel('auth');
+        const True=true, False=false
+        const stage = `{{ stage }}`;
+        const data = {% autoescape off %}{{ data|default:"{}"}}{% endautoescape %};
+
+        channel.postMessage({
+            stage,
+            data
+        });
+
+        window.close()
+    </script>
+
+</head>
+
+<body>
+    <h2>ft_transcendence</h2>
+</body>
+
+</html>

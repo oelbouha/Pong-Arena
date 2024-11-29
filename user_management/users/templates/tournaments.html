@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournaments</title>
+    <link rel="stylesheet" href="{% static 'styles/tournaments.css' %}">
+</head>
+<body>
+    <div class="tournament-container">
+        <h2 class="page-header">Tournaments</h2>
+
+        <!-- Create Tournament Section -->
+        <div class="create-tournament">
+            <h3><a href="{% url 'create_tournament' %}" class="create-link">Create Tournament</a></h3>
+        </div>
+
+        <!-- Search Tournament Section -->
+        <form method="get" class="search-form">
+            <label for="q" class="search-label">Search Tournament: </label>
+            <input type="text" id="q" name="q" placeholder="Enter tournament name or ID" class="search-input" required>
+            <button type="submit" class="search-button">Search</button>
+        </form>
+
+        <!-- Display Search Results -->
+        {% if search_results %}
+            <h3>Search Results</h3>
+            <ul class="search-results">
+                {% for tournament in search_results %}
+                    <li>
+                        <h4><a href="{% url 'tournament_details' tournament.id %}" class="tournament-link">{{ tournament.name }}</a></h4>
+                        <a href="{% url 'join_tournament' tournament.id %}" class="action-link">Join</a>
+                    </li>
+                {% empty %}
+                    <li>No tournaments found.</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Display Ongoing Tournaments -->
+        <h3>Ongoing Tournaments</h3>
+        <ul class="tournament-list">
+            {% for tournament in tournaments %}
+                <li>
+                    <h4><a href="{% url 'tournament_details' tournament.id %}" class="tournament-link">{{ tournament.name }}</a></h4>
+                    {% if user in tournament.participants.all %}
+                        <a href="{% url 'leave_tournament' tournament.id %}" class="action-link">Leave</a>
+                    {% else %}
+                        <a href="{% url 'join_tournament' tournament.id %}" class="action-link">Join</a>
+                    {% endif %}
+                </li>
+            {% empty %}
+                <li>No ongoing tournaments available.</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Pong Game. All rights reserved.</p>
+    </footer>
+</body>
+</html>

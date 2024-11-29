@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="{% static 'styles/home.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Welcome To Home Page</h1>
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="{% url 'profile' user.user_id %}" class="nav-link">Profile</a></li>
+                <li class="nav-item"><a href="{% url 'tournaments' %}" class="nav-link">Tournaments</a></li>
+                <li class="nav-item"><a href="{% url 'landing_page' %}" class="nav-link">Log Out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="profile-info">
+            <h2>Profile of {{ user.username }}</h2>
+
+            <section class="friends-section">
+                <h3>Friends</h3>
+                <ul class="friend-list">
+                    {% for friendship in friends %}
+                        <li class="friend-item">
+                            {% if friendship.user1 == user %}
+                                <a href="{% url 'profile' friendship.user2.user_id %}" class="friend-link">{{ friendship.user2.username }}</a>
+                                <a href="{% url 'remove_friend' friendship.user2.user_id %}" class="remove-friend">Remove Friend</a>
+                            {% else %}
+                                <a href="{% url 'profile' friendship.user1.user_id %}" class="friend-link">{{ friendship.user1.username }}</a>
+                                <a href="{% url 'remove_friend' friendship.user1.user_id %}" class="remove-friend">Remove Friend</a>
+                            {% endif %}
+                        </li> 
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <section class="requests-section">
+                <h3>Friend Requests</h3>
+                <ul class="request-list">
+                    {% for req in friend_requests %}
+                        <li class="request-item">
+                            <a href="{% url 'profile' req.from_user.user_id %}" class="request-link">{{ req.from_user.username }}</a> wants to be your friend.
+                            <a href="{% url 'handle_friend_request' req.id 1 %}" class="accept-request">Accept</a>
+                            <a href="{% url 'handle_friend_request' req.id 0 %}" class="decline-request">Decline</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <section class="search-section">
+                <h3>Search Users</h3>
+                <form method="get" action="{% url 'search_users' %}" class="search-form">
+                    <input type="text" name="q" placeholder="Search users" class="search-input">
+                    <button type="submit" class="search-button">Search</button>
+                </form>
+
+                <h3>Search Results</h3>
+                <ul class="search-results">
+                    {% for user in users %}
+                        <li class="search-item">
+                            {{ user.username }} - <a href="{% url 'send_friend_request' user.id %}" class="send-request">Send Friend Request</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Pong Game. All rights reserved.</p>
+    </footer>
+</body>
+</html>

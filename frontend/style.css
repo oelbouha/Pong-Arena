@@ -1,0 +1,44 @@
+@import url("/themes.css");
+
+body {
+    --color-2: lime;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--dark-color-1);
+}
+
+#app {
+    min-height: 100vh;
+    max-width: min(100%, 1920px);
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    z-index: 1;
+}
+
+#app * {
+    z-index: 1;
+}
+
+#main-router wc-route {
+    height: 100%;
+}
+
+.blur-bg {
+    position: fixed;
+    top: -6px;
+    left: -6px;
+    width: calc(100% + 12px);
+    height: calc(100% + 12px);
+    background-image: url(https://png.pngtree.com/background/20230519/original/pngtree-collection-of-colorful-video-game-controllers-picture-image_2667743.jpg);
+    filter: blur(4px);
+    background-position: center;
+    background-size: cover;
+}

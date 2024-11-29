@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tournament Details</title>
+    <link rel="stylesheet" href="{% static 'styles/tournament_details.css' %}">
+</head>
+<body>
+    <div class="tournament-container">
+        <h1>{{ tournament.name }}</h1>
+        <p><strong>Description:</strong> {{ tournament.description }}</p>
+        <p><strong>Created By:</strong> {{ tournament.created_by.username }}</p>
+
+        <!-- Admin Actions -->
+        {% if user == tournament.created_by %}
+            <div class="admin-actions">
+                <h2>Admin Actions</h2>
+                <form method="post" action="{% url 'remove_tournament' tournament_id=tournament.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-danger">Remove Tournament</button>
+                </form>
+
+                <h3>Kick Participants</h3>
+                <ul>
+                    {% for participant in tournament.participants.all %}
+                        {% if participant != user %}
+                        <li>
+                            {{ participant.username }}
+                            <form method="post" action="{% url 'kick_participant' tournament.id participant.user_id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-danger">Kick</button>
+                            </form>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <!-- Participant Actions -->
+            {% if user in tournament.participants.all %}
+                <div class="participant-actions">
+                    <h2>Participant Actions</h2>
+                    <a href="{% url 'leave_tournament' tournament.id %}" class="btn-warning">Leave Tournament</a>
+                    <a href="{% url 'invite_friends' tournament_id=tournament.id %}" class="btn-primary">Invite Friends</a>
+                </div>
+            {% else %}
+                <!-- Viewer Actions -->
+                <div class="viewer-actions">
+                    <h2>Viewer Actions</h2>
+                    <a href="{% url 'join_tournament' tournament.id %}" class="btn-primary">Join Tournament</a>
+                    <a href="{% url 'invite_friends' tournament.id %}" class="btn-primary">Invite Friends</a>
+                </div>
+            {% endif %}
+        {% endif %}
+        <a href="{% url 'home' %}" class="btn-home">Back to Home</a>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 Pong Game. All rights reserved.</p>
+    </footer>
+</body>
+</html>
